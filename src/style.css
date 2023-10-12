@@ -70,7 +70,7 @@
 
 .cactusMove
 {
-  animation: cactusMoveAnimation 2.5s linear infinite;
+  animation: cactusMoveAnimation var(--cactus-dur, 2.5s) linear infinite;
 }
 
 @keyframes cactusMoveAnimation
@@ -100,7 +100,7 @@
 
 .birdMove
 {
-  animation: birdMove 4.5s linear infinite;
+  animation: birdMove var(--bird-dur, 4.5s) linear infinite;
 }
 
 @keyframes birdMove

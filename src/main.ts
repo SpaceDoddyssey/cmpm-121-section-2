@@ -12,6 +12,9 @@ let isJumping = false;
 let gameOver = true;
 const birdHeight = 150;
 const cactusHeight = 55;
+let cactusDuration = 2.5;
+let birdDuration = 4.5;
+let speed = 1.0;
 
 document.addEventListener("mousedown", () => jump());
 
@@ -26,10 +29,26 @@ function update() {
 
     checkGameOver();
   }
+
+  increaseSpeed();
+}
+
+function increaseSpeed() {
+  speed += 0.0003;
+
+  cactusDuration = 3.5 / speed;
+  birdDuration = 5.5 / speed;
+
+  if (speed >= 2) {
+    speed = 2;
+  }
+
+  cactus?.style.setProperty("--cactus-dur", cactusDuration.toString() + "s");
+  bird?.style.setProperty("--bird-dur", birdDuration.toString() + "s");
 }
 
 function jump() {
-  if (gameOver === false) {
+  if (gameOver == false) {
     if (isJumping == false) {
       isJumping = true;
       dino?.classList.add("jump");
