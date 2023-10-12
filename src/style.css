@@ -15,9 +15,6 @@
   position: relative;
 }
 
-
-
-
 #dino
 {
   width: 50px;
@@ -66,12 +63,9 @@
   background-image: url(/assets/cactus.png);
   background-size: 75px 75px;
 
-
   position: relative;
   top: 100px;
   left: 660px;
-
-  
 }
 
 .cactusMove
@@ -102,7 +96,6 @@
 
   background-image: url(/assets/bird.png);
   background-size: 50px 50px;
-  
 }
 
 .birdMove
@@ -123,7 +116,6 @@
   }
 }
 
-
 #scoreText
 {
   position: absolute;
@@ -131,4 +123,3 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
