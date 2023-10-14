@@ -6,41 +6,49 @@ const bird = document.getElementById("bird");
 const scoreText = document.getElementById("scoreText");
 
 let score = 0;
-setText("click to start!");
-
 let isJumping = false;
 let gameOver = true;
+
 const birdHeight = 150;
 const cactusHeight = 55;
-let cactusDuration = 2.5;
-let birdDuration = 4.5;
+
+//Speed variables
+const cactusBaseDuration = 3.5;
+const birdBaseDuration = 5.5;
+let cactusDuration = cactusBaseDuration;
+let birdDuration = birdBaseDuration;
 let speed = 1.0;
+const speedCap = 2.3;
+const speedIncreaseAmount = 0.0003;
 
-document.addEventListener("mousedown", () => jump());
-
-setInterval(function () {
-  update();
-}, 10);
+init();
+function init() {
+  setText("click to start!");
+  document.addEventListener("mousedown", () => jump());
+  setInterval(function () {
+    update();
+  }, 10);
+}
 
 function update() {
   if (gameOver == false) {
     score = score + 1;
     setText("Score: " + score);
 
+    increaseSpeed();
+
     checkGameOver();
   }
-
-  increaseSpeed();
 }
 
 function increaseSpeed() {
-  speed += 0.0003;
+  speed += speedIncreaseAmount;
 
-  cactusDuration = 3.5 / speed;
-  birdDuration = 5.5 / speed;
+  cactusDuration = cactusBaseDuration / speed;
+  birdDuration = birdBaseDuration / speed;
 
-  if (speed >= 2) {
-    speed = 2;
+  if (speed >= speedCap) {
+    speed = speedCap;
   }
 
   cactus?.style.setProperty("--cactus-dur", cactusDuration.toString() + "s");
@@ -62,7 +70,6 @@ function jump() {
 function removeJump() {
   dino?.classList.remove("jump");
   isJumping = false;
-  //mainLoop = mainLoop //bug fix?
 }
 
 function removeObstacles() {
@@ -71,38 +78,40 @@ function removeObstacles() {
 }
 
 function checkGameOver() {
-  if (gameOver == false && dino != null && cactus != null && bird != null) {
-    //get is dinosaur jumping
-    const dinoTop = parseInt(
-      window.getComputedStyle(dino).getPropertyValue("top")
-    );
+  if (gameOver == true || dino == null || cactus == null || bird == null) {
+    return;
+  }
 
-    //get cactus position
-    const cactusleft = parseInt(
-      window.getComputedStyle(cactus).getPropertyValue("left")
-    );
+  //get is dinosaur jumping
+  const dinoTop = parseInt(
+    window.getComputedStyle(dino).getPropertyValue("top")
+  );
 
-    //get bird position
-    const birdleft = parseInt(
-      window.getComputedStyle(bird).getPropertyValue("left")
-    );
+  //get cactus position
+  const cactusleft = parseInt(
+    window.getComputedStyle(cactus).getPropertyValue("left")
+  );
 
-    //detect collision
-    if (
-      (dinoTop >= birdHeight && Math.abs(cactusleft) < 7) ||
-      (dinoTop <= cactusHeight && Math.abs(birdleft) < 11)
-    ) {
-      //end game
-      console.log("player died!");
-      setText("Final Score: " + score + "! Click To Play Again!");
-      gameOver = true;
+  //get bird position
+  const birdleft = parseInt(
+    window.getComputedStyle(bird).getPropertyValue("left")
+  );
 
-      //reset player
-      removeJump();
+  //detect collision
+  if (
+    (dinoTop >= birdHeight && Math.abs(cactusleft) < 7) ||
+    (dinoTop <= cactusHeight && Math.abs(birdleft) < 11)
+  ) {
+    //end game
+    console.log("player died!");
+    setText("Final Score: " + score + "! Click To Play Again!");
+    gameOver = true;
 
-      //reset cactus
-      removeObstacles();
-    }
+    //reset player
+    removeJump();
+
+    //reset cactus
+    removeObstacles();
   }
 }
 
@@ -110,6 +119,9 @@ function startGame() {
   console.log("Game started!");
   gameOver = false;
   score = 0;
+  speed = 1.0;
+  cactusDuration = cactusBaseDuration;
+  birdDuration = birdBaseDuration;
   cactus?.classList.add("cactusMove");
   bird?.classList.add("birdMove");
 }
